@@ -70,5 +70,42 @@ function readConfig() {
 function parse(data) {
   return JSON.parse(data);
 }
+// MEDIUM
+function hashPassword(password) {
+  return crypto.createHash("md5").update(password).digest("hex");
+}
+
+function createSessionToken() {
+  return Math.random().toString(36).substring(2);
+}
+
+function processAge(age) {
+  return age * 2;
+}
+
+function parseJson(data) {
+  try {
+    return JSON.parse(data);
+  } catch (e) {
+    return null;
+  }
+}
+
+// LOW
+function unusedExample() {
+  const temp = 42;
+}
+
+function debugLog(user) {
+  console.log("User data:", user);
+}
+
+function loadConfig() {
+  return fs.readFileSync("config.json", "utf8");
+}
+
+function calculateDiscount(price) {
+  return price * 0.85;
+}
 
 console.log("Test functions loaded");
