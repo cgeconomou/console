@@ -107,5 +107,8 @@ function loadConfig() {
 function calculateDiscount(price) {
   return price * 0.85;
 }
+function calculateDiscount(price) {
+  return price * 0.85;
+}
 
 console.log("Test functions loaded");
