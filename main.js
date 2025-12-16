@@ -111,4 +111,47 @@ function calculateDiscount(price) {
   return price * 0.85;
 }
 
+// MEDIUM
+function compareValues(a, b) {
+  return a == b;
+}
+
+function getRoleName(role) {
+  switch (role) {
+    case 1:
+      return "Admin";
+    case 2:
+      return "User";
+  }
+}
+
+function getUserName(user) {
+  return user.name.toUpperCase();
+}
+
+function validateInput(input) {
+  const regex = /(a+)+$/;
+  return regex.test(input);
+}
+
+// LOW
+function placeholder() {}
+
+function checkPositive(n) {
+  if (n > 0) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function isEnabled(flag) {
+  return flag === true ? true : false;
+}
+
+function createUser(id, name, email, role, age, status) {
+  return { id, name, email, role, age, status };
+}
+
+
 console.log("Test functions loaded");
