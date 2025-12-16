@@ -283,6 +283,15 @@ function doNothing() {
 function getRole() {
   return "ADMIN";
 }
+// Redundant return
+function doNothing() {
+  return;
+}
+
+// Hard-coded string
+function getRole() {
+  return "ADMIN";
+}
 
 console.log("Medium and low severity test bundle loaded");
 
