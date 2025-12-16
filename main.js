@@ -152,6 +152,139 @@ function isEnabled(flag) {
 function createUser(id, name, email, role, age, status) {
   return { id, name, email, role, age, status };
 }
+// =====================
+// MEDIUM SEVERITY
+// =====================
+
+// Weak comparison
+function isEqual(a, b) {
+  return a == b;
+}
+
+// Insecure randomness
+function generateId() {
+  return Math.random() * 1000000;
+}
+
+// Missing input validation
+function calculatePrice(price) {
+  return price * 1.2;
+}
+
+// Possible null reference
+function getEmail(user) {
+  return user.email.toLowerCase();
+}
+
+// Swallowed error
+function safeParse(json) {
+  try {
+    return JSON.parse(json);
+  } catch (e) {
+    return {};
+  }
+}
+
+// Missing default case
+function getStatus(code) {
+  switch (code) {
+    case 200:
+      return "OK";
+    case 404:
+      return "Not Found";
+  }
+}
+
+// Promise without catch
+function loadData() {
+  return fetch("/api/data").then(r => r.json());
+}
+
+// Regex with potential backtracking
+function checkPattern(str) {
+  const re = /(x+)+y/;
+  return re.test(str);
+}
+
+// Shadowed variable
+function sum(total) {
+  let result = total;
+  if (total > 10) {
+    let total = 5;
+    result += total;
+  }
+  return result;
+}
+
+// Too many responsibilities
+function handleUser(user) {
+  console.log(user);
+  user.active = true;
+  return JSON.stringify(user);
+}
+
+
+// =====================
+// LOW SEVERITY
+// =====================
+
+// Unused variable
+function unusedVar() {
+  const temp = "unused";
+}
+
+// Empty function
+function notImplemented() {}
+
+// Redundant boolean
+function isValid(flag) {
+  return flag ? true : false;
+}
+
+// Unnecessary else
+function isAdult(age) {
+  if (age >= 18) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+// Magic number
+function applyTax(amount) {
+  return amount * 1.17;
+}
+
+// Duplicate logic
+function addOne(a) {
+  return a + 1;
+}
+
+function addOneAgain(a) {
+  return a + 1;
+}
+
+// Console log
+function debug(data) {
+  console.log("Debug:", data);
+}
+
+// Blocking loop
+function slowLoop() {
+  for (let i = 0; i < 100000000; i++) {}
+}
+
+// Redundant return
+function doNothing() {
+  return;
+}
+
+// Hard-coded string
+function getRole() {
+  return "ADMIN";
+}
+
+console.log("Medium and low severity test bundle loaded");
 
 
 console.log("Test functions loaded");
