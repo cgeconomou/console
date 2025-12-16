@@ -287,6 +287,19 @@ function getRole() {
 function doNothing() {
   return;
 }
+// Redundant return
+function doNothing() {
+  return;
+}
+
+// Hard-coded string
+function getRole() {
+  return "ADMIN";
+}
+// Redundant return
+function doNothing() {
+  return;
+}
 
 // Hard-coded string
 function getRole() {
