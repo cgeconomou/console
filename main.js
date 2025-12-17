@@ -299,10 +299,6 @@ function doNothing() {
 function doNothing() {
   return;
 }
-// Redundant return
-function doNothing() {
-  return;
-}
 
 // Hard-coded string
 function getRole() {
