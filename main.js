@@ -273,6 +273,19 @@ function debug(data) {
 function slowLoop() {
   for (let i = 0; i < 100000000; i++) {}
 }
+function addOneAgain(a) {
+  return a + 1;
+}
+
+// Console log
+function debug(data) {
+  console.log("Debug:", data);
+}
+
+// Blocking loop
+function slowLoop() {
+  for (let i = 0; i < 100000000; i++) {}
+}
 
 // Redundant return
 function doNothing() {
