@@ -249,6 +249,22 @@ function isAdult(age) {
     return false;
   }
 }
+// Empty function
+function notImplemented() {}
+
+// Redundant boolean
+function isValid(flag) {
+  return flag ? true : false;
+}
+
+// Unnecessary else
+function isAdult(age) {
+  if (age >= 18) {
+    return true;
+  } else {
+    return false;
+  }
+}
 
 // Magic number
 function applyTax(amount) {
