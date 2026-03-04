@@ -14,12 +14,31 @@ function runCommand(cmd) {
   });
 }
 
+function deleteUser(db, userId) {
+  // BAD: no authorization check
+  return db.query("DELETE FROM users WHERE id = " + userId);
+}
 function renderUserInput(input) {
   // BAD: directly injecting into DOM
   document.body.innerHTML = "<p>" + input + "</p>";
 }
 
+function redirectUser(req, res) {
+  // BAD: unvalidated redirect
+  res.redirect(req.query.url);
+}
 
+function merge(target, source) {
+  for (let key in source) {
+    target[key] = source[key]; // BAD: no key validation
+  }
+  return target;
+}
+
+function redirectUser(req, res) {
+  // BAD: unvalidated redirect
+  res.redirect(req.query.url);
+}
 function renderUserInput(input) {
   // BAD: directly injecting into DOM
   document.body.innerHTML = "<p>" + input + "</p>";
@@ -30,6 +49,12 @@ function getUser(db, userId) {
   return db.query(query);
 }
 
+function merge(target, source) {
+  for (let key in source) {
+    target[key] = source[key]; // BAD: no key validation
+  }
+  return target;
+}
 const { exec } = require("child_process");
 
 function runCommand(cmd) {
@@ -37,6 +62,10 @@ function runCommand(cmd) {
     if (err) console.error("Error:", err);
     console.log(stdout);
   });
+}
+function uploadFile(file) {
+  // BAD: no file type validation
+  fs.writeFileSync("./uploads/" + file.name, file.data);
 }
 
 function renderUserInput(input) {
