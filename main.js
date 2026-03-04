@@ -215,6 +215,21 @@ function sum(total) {
   }
   return result;
 }
+// Regex with potential backtracking
+function checkPattern(str) {
+  const re = /(x+)+y/;
+  return re.test(str);
+}
+
+// Shadowed variable
+function sum(total) {
+  let result = total;
+  if (total > 10) {
+    let total = 5;
+    result += total;
+  }
+  return result;
+}
 
 // Too many responsibilities
 function handleUser(user) {
@@ -236,6 +251,10 @@ function unusedVar() {
 // Empty function
 function notImplemented() {}
 
+// Redundant boolean
+function isValid(flag) {
+  return flag ? true : false;
+}
 // Redundant boolean
 function isValid(flag) {
   return flag ? true : false;
