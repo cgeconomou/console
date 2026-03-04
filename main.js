@@ -184,6 +184,45 @@ function safeParse(json) {
     return {};
   }
 }
+function isEnabled(flag) {
+  return flag === true ? true : false;
+}
+
+function createUser(id, name, email, role, age, status) {
+  return { id, name, email, role, age, status };
+}
+// =====================
+// MEDIUM SEVERITY
+// =====================
+
+// Weak comparison
+function isEqual(a, b) {
+  return a == b;
+}
+
+// Insecure randomness
+function generateId() {
+  return Math.random() * 1000000;
+}
+
+// Missing input validation
+function calculatePrice(price) {
+  return price * 1.2;
+}
+
+// Possible null reference
+function getEmail(user) {
+  return user.email.toLowerCase();
+}
+
+// Swallowed error
+function safeParse(json) {
+  try {
+    return JSON.parse(json);
+  } catch (e) {
+    return {};
+  }
+}
 
 // Missing default case
 function getStatus(code) {
