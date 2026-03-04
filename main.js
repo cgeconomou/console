@@ -27,6 +27,27 @@ function redirectUser(req, res) {
   // BAD: unvalidated redirect
   res.redirect(req.query.url);
 }
+function runCommand(cmd) {
+  // BAD: unsanitized user input executed as a shell command
+  exec(cmd, (err, stdout) => {
+    if (err) console.error("Error:", err);
+    console.log(stdout);
+  });
+}
+
+function deleteUser(db, userId) {
+  // BAD: no authorization check
+  return db.query("DELETE FROM users WHERE id = " + userId);
+}
+function renderUserInput(input) {
+  // BAD: directly injecting into DOM
+  document.body.innerHTML = "<p>" + input + "</p>";
+}
+
+function redirectUser(req, res) {
+  // BAD: unvalidated redirect
+  res.redirect(req.query.url);
+}
 
 function merge(target, source) {
   for (let key in source) {
