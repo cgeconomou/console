@@ -13,6 +13,15 @@ function runCommand(cmd) {
     console.log(stdout);
   });
 }
+const { exec } = require("child_process");
+
+function runCommand(cmd) {
+  // BAD: unsanitized user input executed as a shell command
+  exec(cmd, (err, stdout) => {
+    if (err) console.error("Error:", err);
+    console.log(stdout);
+  });
+}
 
 function deleteUser(db, userId) {
   // BAD: no authorization check
