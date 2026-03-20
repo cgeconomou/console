@@ -1,590 +1,133 @@
-function getUser(db, userId) {
-  // BAD: user input directly concatenated into query
-  const query = "SELECT * FROM users WHERE id = '" + userId + "'";
-  return db.query(query);
+// ────────────────────────────────────────────────
+//  Single-file "vulnerable patterns & clues" bundle
+//  Use for: code review training, CTF, audit practice
+// ────────────────────────────────────────────────
+
+const { exec } = require('child_process');
+const fs = require('fs');
+const crypto = require('crypto');
+
+// ─── Critical / High severity ─────────────────────────────────────
+
+function getUserById(db, id) {
+  return db.query("SELECT * FROM users WHERE id = '" + id + "'");         // SQL Injection
 }
 
-const { exec } = require("child_process");
-
-function runCommand(cmd) {
-  // BAD: unsanitized user input executed as a shell command
-  exec(cmd, (err, stdout) => {
-    if (err) console.error("Error:", err);
-    console.log(stdout);
-  });
-}
-function runCommand(cmd) {
-  // BAD: unsanitized user input executed as a shell command
-  exec(cmd, (err, stdout) => {
-    if (err) console.error("Error:", err);
-    console.log(stdout);
-  });
-}
-function runCommand(cmd) {
-  // BAD: unsanitized user input executed as a shell command
-  exec(cmd, (err, stdout) => {
-    if (err) console.error("Error:", err);
-    console.log(stdout);
-  });
-}
-function runCommand(cmd) {
-  // BAD: unsanitized user input executed as a shell command
-  exec(cmd, (err, stdout) => {
-    if (err) console.error("Error:", err);
-    console.log(stdout);
-  });
-}
-function runCommand(cmd) {
-  // BAD: unsanitized user input executed as a shell command
-  exec(cmd, (err, stdout) => {
-    if (err) console.error("Error:", err);
-    console.log(stdout);
-  });
-}
-function runCommand(cmd) {
-  // BAD: unsanitized user input executed as a shell command
-  exec(cmd, (err, stdout) => {
-    if (err) console.error("Error:", err);
-    console.log(stdout);
-  });
-}
-function runCommand(cmd) {
-  // BAD: unsanitized user input executed as a shell command
-  exec(cmd, (err, stdout) => {
-    if (err) console.error("Error:", err);
-    console.log(stdout);
-  });
-}
-function getUser(db, userId) {
-  // BAD: user input directly concatenated into query
-  const query = "SELECT * FROM users WHERE id = '" + userId + "'";
-  return db.query(query);
+function deleteAccount(db, uid) {
+  db.query(`DELETE FROM users WHERE id = ${uid}`);                        // SQLi + no authz
 }
 
-const { exec } = require("child_process");
-
-function runCommand(cmd) {
-  // BAD: unsanitized user input executed as a shell command
-  exec(cmd, (err, stdout) => {
-    if (err) console.error("Error:", err);
-    console.log(stdout);
-  });
-}
-const { exec } = require("child_process");
-
-function runCommand(cmd) {
-  // BAD: unsanitized user input executed as a shell command
-  exec(cmd, (err, stdout) => {
-    if (err) console.error("Error:", err);
-    console.log(stdout);
-  });
+function runOsCommand(userInput) {
+  exec(userInput, (err, out) => console.log(out || err));                 // Command Injection
 }
 
-function deleteUser(db, userId) {
-  // BAD: no authorization check
-  return db.query("DELETE FROM users WHERE id = " + userId);
+function unsafeRedirect(req, res) {
+  res.redirect(req.query.next || '/');                                    // Open Redirect
 }
 
-const { exec } = require("child_process");
-
-function runCommand(cmd) {
-  // BAD: unsanitized user input executed as a shell command
-  exec(cmd, (err, stdout) => {
-    if (err) console.error("Error:", err);
-    console.log(stdout);
-  });
+function renderComment(html) {
+  document.getElementById('comments').innerHTML += html;                  // XSS (innerHTML)
 }
 
-function deleteUser(db, userId) {
-  // BAD: no authorization check
-  return db.query("DELETE FROM users WHERE id = " + userId);
-}
-function renderUserInput(input) {
-  // BAD: directly injecting into DOM
-  document.body.innerHTML = "<p>" + input + "</p>";
-}
-function deleteUser(db, userId) {
-  // BAD: no authorization check
-  return db.query("DELETE FROM users WHERE id = " + userId);
-}
-function renderUserInput(input) {
-  // BAD: directly injecting into DOM
-  document.body.innerHTML = "<p>" + input + "</p>";
+function mergeObject(target, source) {
+  for (let k in source) target[k] = source[k];                            // Prototype pollution
 }
 
-function redirectUser(req, res) {
-  // BAD: unvalidated redirect
-  res.redirect(req.query.url);
+function storeAvatar(file) {
+  fs.writeFileSync(`uploads/${file.name}`, file.data);                     // Path traversal + no validation
 }
 
-function deleteUser(db, userId) {
-  // BAD: no authorization check
-  return db.query("DELETE FROM users WHERE id = " + userId);
-}
-function renderUserInput(input) {
-  // BAD: directly injecting into DOM
-  document.body.innerHTML = "<p>" + input + "</p>";
+const SECRET = "hf9s8df7-4klj23-89sdfkljh2893745kljh";                   // Hardcoded secret
+
+// ─── Medium severity ──────────────────────────────────────────────
+
+function hashPassword(pw) {
+  return crypto.createHash('md5').update(pw).digest('hex');               // Weak hash (MD5)
 }
 
-function redirectUser(req, res) {
-  // BAD: unvalidated redirect
-  res.redirect(req.query.url);
-}
-function runCommand(cmd) {
-  // BAD: unsanitized user input executed as a shell command
-  exec(cmd, (err, stdout) => {
-    if (err) console.error("Error:", err);
-    console.log(stdout);
-  });
+function createResetToken() {
+  return Math.random().toString(36).slice(2, 15);                         // Weak / predictable token
 }
 
-function deleteUser(db, userId) {
-  // BAD: no authorization check
-  return db.query("DELETE FROM users WHERE id = " + userId);
-}
-function renderUserInput(input) {
-  // BAD: directly injecting into DOM
-  document.body.innerHTML = "<p>" + input + "</p>";
+function isAdmin(role) {
+  return role == 1;                                                       // Weak comparison (==)
 }
 
-function redirectUser(req, res) {
-  // BAD: unvalidated redirect
-  res.redirect(req.query.url);
+function safeJsonParse(str) {
+  try { return JSON.parse(str); } catch (_) { return {}; }                // Error swallowing
 }
 
-function merge(target, source) {
-  for (let key in source) {
-    target[key] = source[key]; // BAD: no key validation
-  }
-  return target;
-}
-const { exec } = require("child_process");
-
-function runCommand(cmd) {
-  // BAD: unsanitized user input executed as a shell command
-  exec(cmd, (err, stdout) => {
-    if (err) console.error("Error:", err);
-    console.log(stdout);
-  });
+function getProfilePicUrl(user) {
+  return user?.profile?.pic?.toLowerCase();                               // Potential null/undefined dereference
 }
 
-function deleteUser(db, userId) {
-  // BAD: no authorization check
-  return db.query("DELETE FROM users WHERE id = " + userId);
-}
-function renderUserInput(input) {
-  // BAD: directly injecting into DOM
-  document.body.innerHTML = "<p>" + input + "</p>";
+function validateCode(input) {
+  return /(a+)+$/.test(input);                                            // ReDoS (catastrophic backtracking)
 }
 
-function redirectUser(req, res) {
-  // BAD: unvalidated redirect
-  res.redirect(req.query.url);
-}
-
-function merge(target, source) {
-  for (let key in source) {
-    target[key] = source[key]; // BAD: no key validation
-  }
-  return target;
-}
-
-function redirectUser(req, res) {
-  // BAD: unvalidated redirect
-  res.redirect(req.query.url);
-}
-function renderUserInput(input) {
-  // BAD: directly injecting into DOM
-  document.body.innerHTML = "<p>" + input + "</p>";
-}
-// HIGH SEVERITY
-function getUser(db, userId) {
-  const query = "SELECT * FROM users WHERE id = '" + userId + "'";
-  return db.query(query);
-}
-
-function merge(target, source) {
-  for (let key in source) {
-    target[key] = source[key]; // BAD: no key validation
-  }
-  return target;
-}
-const { exec } = require("child_process");
-
-function runCommand(cmd) {
-  exec(cmd, (err, stdout) => {
-    if (err) console.error("Error:", err);
-    console.log(stdout);
-  });
-}
-function uploadFile(file) {
-  // BAD: no file type validation
-  fs.writeFileSync("./uploads/" + file.name, file.data);
-}
-
-function renderUserInput(input) {
-  document.body.innerHTML = "<p>" + input + "</p>";
-}
-
-const API_KEY = "12345-SECRET-HARDCODED-KEY";
-
-// MEDIUM SEVERITY
-const crypto = require("crypto");
-
-function weakHash(password) {
-  return crypto.createHash("md5").update(password).digest("hex");
-}
-
-function generateToken() {
-  return Math.random().toString(36).slice(2);
-}
-
-// LOW SEVERITY
-function testUnused() {
-  let x = 10;
-}
-
-const fs = require("fs");
-
-function readConfig() {
-  return fs.readFileSync("config.json", "utf8");
-}
-
-function parse(data) {
-  return JSON.parse(data);
-}
-// MEDIUM
-function hashPassword(password) {
-  return crypto.createHash("md5").update(password).digest("hex");
-}
-
-function createSessionToken() {
-  return Math.random().toString(36).substring(2);
-}
-
-function processAge(age) {
-  return age * 2;
-}
-
-function parseJson(data) {
-  try {
-    return JSON.parse(data);
-  } catch (e) {
-    return null;
-  }
-}
-
-// LOW
-function unusedExample() {
-  const temp = 42;
-}
-
-function debugLog(user) {
-  console.log("User data:", user);
-}
-
-function loadConfig() {
-  return fs.readFileSync("config.json", "utf8");
-}
-
-function calculateDiscount(price) {
-  return price * 0.85;
-}
-function calculateDiscount(price) {
-  return price * 0.85;
-}
-
-// MEDIUM
-function compareValues(a, b) {
-  return a == b;
-}
-
-function getRoleName(role) {
-  switch (role) {
-    case 1:
-      return "Admin";
-    case 2:
-      return "User";
-  }
-}
-
-function getUserName(user) {
-  return user.name.toUpperCase();
-}
-
-function validateInput(input) {
-  const regex = /(a+)+$/;
-  return regex.test(input);
-}
-
-// LOW
-function placeholder() {}
-
-function checkPositive(n) {
-  if (n > 0) {
-    return true;
-  } else {
-    return false;
-  }
-}
-
-function isEnabled(flag) {
-  return flag === true ? true : false;
-}
-
-function createUser(id, name, email, role, age, status) {
-  return { id, name, email, role, age, status };
-}
-// =====================
-// MEDIUM SEVERITY
-// =====================
-
-// Weak comparison
-function isEqual(a, b) {
-  return a == b;
-}
-
-// Insecure randomness
-function generateId() {
-  return Math.random() * 1000000;
-}
-
-// Missing input validation
-function calculatePrice(price) {
-  return price * 1.2;
-}
-
-// Possible null reference
-function getEmail(user) {
-  return user.email.toLowerCase();
-}
-
-// Swallowed error
-function safeParse(json) {
-  try {
-    return JSON.parse(json);
-  } catch (e) {
-    return {};
-  }
-}
-function isEnabled(flag) {
-  return flag === true ? true : false;
-}
-
-function createUser(id, name, email, role, age, status) {
-  return { id, name, email, role, age, status };
-}
-// =====================
-// MEDIUM SEVERITY
-// =====================
-
-// Weak comparison
-function isEqual(a, b) {
-  return a == b;
-}
-
-// Insecure randomness
-function generateId() {
-  return Math.random() * 1000000;
-}
-
-// Missing input validation
-function calculatePrice(price) {
-  return price * 1.2;
-}
-
-// Possible null reference
-function getEmail(user) {
-  return user.email.toLowerCase();
-}
-
-// Swallowed error
-function safeParse(json) {
-  try {
-    return JSON.parse(json);
-  } catch (e) {
-    return {};
-  }
-}
-
-// Missing default case
-function getStatus(code) {
+function getOrderStatus(code) {
   switch (code) {
-    case 200:
-      return "OK";
-    case 404:
-      return "Not Found";
-  }
+    case 1: return "Pending";
+    case 2: return "Shipped";
+  }                                                                       // Missing default case
 }
 
-// Promise without catch
-function loadData() {
-  return fetch("/api/data").then(r => r.json());
+// ─── Low / code quality / maintainability issues ─────────────────────
+
+function calculateTotal(price) {
+  return price * 1.2;                                                     // Magic number
 }
 
-// Regex with potential backtracking
-function checkPattern(str) {
-  const re = /(x+)+y/;
-  return re.test(str);
-}
-
-// Shadowed variable
-function sum(total) {
-  let result = total;
-  if (total > 10) {
-    let total = 5;
-    result += total;
-  }
-  return result;
-}
-// Regex with potential backtracking
-function checkPattern(str) {
-  const re = /(x+)+y/;
-  return re.test(str);
-}
-
-// Shadowed variable
-function sum(total) {
-  let result = total;
-  if (total > 10) {
-    let total = 5;
-    result += total;
-  }
-  return result;
-}
-
-// Too many responsibilities
-function handleUser(user) {
-  console.log(user);
-  user.active = true;
-  return JSON.stringify(user);
-}
-
-
-// =====================
-// LOW SEVERITY
-// =====================
-
-// Unused variable
-function unusedVar() {
-  const temp = "unused";
-}
-
-// Empty function
-function notImplemented() {}
-
-// Redundant boolean
-function isValid(flag) {
-  return flag ? true : false;
-}
-// Redundant boolean
-function isValid(flag) {
-  return flag ? true : false;
-}
-
-// Unnecessary else
 function isAdult(age) {
-  if (age >= 18) {
-    return true;
-  } else {
-    return false;
-  }
-}
-// Empty function
-function notImplemented() {}
-
-// Redundant boolean
-function isValid(flag) {
-  return flag ? true : false;
+  if (age >= 18) return true;
+  else           return false;                                            // Redundant else
 }
 
-// Unnecessary else
-function isAdult(age) {
-  if (age >= 18) {
-    return true;
-  } else {
-    return false;
-  }
+function isActive(flag) {
+  return flag ? true : false;                                             // Redundant ternary
 }
 
-// Magic number
-function applyTax(amount) {
-  return amount * 1.17;
+function debugUser(user) {
+  console.log("Current user:", user);                                     // Leftover debug log
 }
 
-// Duplicate logic
-function addOne(a) {
-  return a + 1;
+function waitHere() {
+  for (let i = 0; i < 50000000; i++) {}                                   // Busy-wait / blocking
 }
 
-function addOneAgain(a) {
-  return a + 1;
+function getRoleName() {
+  return "admin";                                                         // Hardcoded string instead of constant
 }
 
-// Console log
-function debug(data) {
-  console.log("Debug:", data);
+function addOne(x) { return x + 1; }
+function increment(x) { return x + 1; }                                   // Duplicated logic
+
+function unusedHelper() {
+  const tmp = 42;
+  return "todo";                                                          // Dead code / unused variable
 }
 
-// Blocking loop
-function slowLoop() {
-  for (let i = 0; i < 100000000; i++) {}
-}
-function addOneAgain(a) {
-  return a + 1;
-}
-
-// Console log
-function debug(data) {
-  console.log("Debug:", data);
-}
-
-// Blocking loop
-function slowLoop() {
-  for (let i = 0; i < 100000000; i++) {}
-}
-
-// Redundant return
 function doNothing() {
-  return;
+  return;                                                                 // Redundant return
 }
 
-// Hard-coded string
-function getRole() {
-  return "ADMIN";
-}
-// Redundant return
-function doNothing() {
-  return;
-}
-// Redundant return
-function doNothing() {
-  return;
-}
-// Redundant return
-function doNothing() {
-  return;
-}
-// Redundant return
-function doNothing() {
-  return;
+// ─── Bonus suspicious patterns ───────────────────────────────────────
+
+const jwtSecret = "super-secret-key-please-dont-tell-anyone";            // Another hardcoded secret
+
+function logAccess(ip) {
+  fs.appendFileSync('access.log', ip + '\n');                             // No sanitization, eventual DoS
 }
 
-// Hard-coded string
-function getRole() {
-  return "ADMIN";
-}
-// Redundant return
-function doNothing() {
-  return;
+function parseUserAgent(ua) {
+  return ua.split(';')[1].trim();                                         // Brittle parsing → potential crash
 }
 
-// Hard-coded string
-function getRole() {
-  return "ADMIN";
+// ─── Quick self-test / banner ────────────────────────────────────────
+
+if (require.main === module) {
+  console.log("Vulnerable clue bundle loaded.");
+  console.log("High:", getUserById.name, runOsCommand.name, renderComment.name);
+  console.log("Medium:", hashPassword.name, createResetToken.name, validateCode.name);
+  console.log("Low:", isAdult.name, debugUser.name, waitHere.name);
 }
-
-console.log("Medium and low severity test bundle loaded");
-
-
-console.log("Test functions loaded");
