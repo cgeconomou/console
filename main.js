@@ -131,3 +131,124 @@ if (require.main === module) {
   console.log("Medium:", hashPassword.name, createResetToken.name, validateCode.name);
   console.log("Low:", isAdult.name, debugUser.name, waitHere.name);
 }
+
+// ─── More HIGH severity patterns ─────────────────────────────────────
+
+function loginCheck(username, password) {
+  return db.query(`SELECT * FROM users WHERE username='${username}' AND password='${password}'`);  // Classic SQLi
+}
+
+function runBackupScript(scriptPath) {
+  exec(`bash ${scriptPath}`);                                                     // Command injection via path
+}
+
+function downloadContent(url) {
+  const fullUrl = "https://cdn.example.com/" + url;
+  // imagine fetch or http.get here → SSRF + open redirect variant
+  http.get(fullUrl);
+}
+
+function setAdminCookie(user) {
+  res.cookie('role', user.isAdmin ? 'admin' : 'user', { signed: false });         // Unsigned cookie + trust client
+}
+
+function saveProfilePicture(filename, content) {
+  fs.writeFileSync(`/var/www/uploads/${filename}`, content);                      // Arbitrary file write (path traversal)
+}
+
+const WEBHOOK_SECRET = "whsec_8f4b3c2d9a1e76543210987654321fedcba";             // Hardcoded webhook secret
+
+// ─── More MEDIUM severity ─────────────────────────────────────────────
+
+function signJwt(payload) {
+  return jwt.sign(payload, "secret");                                             // Hardcoded weak jwt secret
+}
+
+function verifyJwt(token) {
+  return jwt.verify(token, "secret");                                             // Same hardcoded secret
+}
+
+function createApiKey() {
+  return crypto.randomBytes(8).toString('hex');                                   // Too short / predictable API key
+}
+
+function checkPermission(user, required) {
+  return user.role == required;                                                   // == instead of ===
+}
+
+function parseSearchQuery(q) {
+  return new RegExp(q, 'i');                                                      // Unescaped user regex → ReDoS
+}
+
+function getProductPrice(id) {
+  const discount = id % 10 === 0 ? 0.5 : 0;
+  return basePrice * (1 - discount);                                              // Business logic error / hidden discount
+}
+
+function safeDivide(a, b) {
+  try {
+    return a / b;
+  } catch {
+    return 0;
+  }                                                                               // Swallowing division by zero
+}
+
+// ─── More LOW / code smell / maintainability ──────────────────────────
+
+function formatPrice(p) {
+  return "€" + p * 1.21;                                                          // Magic number (VAT?)
+}
+
+function isPowerUser(u) {
+  if (u.level > 5) {
+    return true
+  } else {
+    return false
+  }                                                                               // Redundant else + missing semicolon
+}
+
+function logEvent(event) {
+  console.log(event);                                                             // Console.log in production code
+}
+
+function wait(ms) {
+  const start = Date.now();
+  while (Date.now() - start < ms) {}                                              // Synchronous sleep / CPU burn
+}
+
+function getUserGreeting(name) {
+  return `Hello, ${name || 'Guest'}`;                                             // Template literal concatenation smell
+}
+
+function incrementCounter() {
+  counter = counter + 1;
+  return counter;
+}                                                                                 // Implicit global variable
+
+function processItems(items) {
+  items.forEach(item => {
+    console.log(item);
+  });
+  return items.length;
+}                                                                                 // Side-effect in seemingly pure function
+
+function validateEmail(email) {
+  return email.includes('@');                                                     // Extremely weak email validation
+}
+
+function getConfigValue(key) {
+  return config[key];                                                             // No default / no validation
+}
+
+function calculateAge(birthYear) {
+  return new Date().getFullYear() - birthYear;                                    // No timezone / leap year consideration
+}
+
+// ─── Even more suspicious one-liners / fragments ──────────────────────
+
+const adminPassword = "P@ssw0rd123";                                              // Classic weak password
+function isAuthorized(token) { return token === "guest123"; }                     // Backdoor / hardcoded token
+function runQuery(q) { return db.query(q); }                                      // Direct query passthrough
+function saveData(d) { fs.writeFileSync("data.json", JSON.stringify(d)); }        // Race condition risk + no atomic write
+
+console.log("Additional suspicious clue patterns loaded");
