@@ -206,6 +206,17 @@ function isPowerUser(u) {
     return false
   }                                                                               // Redundant else + missing semicolon
 }
+function formatPrice(p) {
+  return "€" + p * 1.21;                                                          // Magic number (VAT?)
+}
+
+function isPowerUser(u) {
+  if (u.level > 5) {
+    return true
+  } else {
+    return false
+  }                                                                               // Redundant else + missing semicolon
+}
 
 function logEvent(event) {
   console.log(event);                                                             // Console.log in production code
