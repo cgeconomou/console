@@ -180,10 +180,7 @@ function parseSearchQuery(q) {
   return new RegExp(q, 'i');                                                      // Unescaped user regex → ReDoS
 }
 
-function getProductPrice(id) {
-  const discount = id % 10 === 0 ? 0.5 : 0;
-  return basePrice * (1 - discount);                                              // Business logic error / hidden discount
-}
+
 
 function safeDivide(a, b) {
   try {
