@@ -99,8 +99,7 @@ function getRoleName() {
   return "admin";                                                         // Hardcoded string instead of constant
 }
 
-function addOne(x) { return x + 1; }
-function increment(x) { return x + 1; }                                   // Duplicated logic
+
 
 function unusedHelper() {
   const tmp = 42;
