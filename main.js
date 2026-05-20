@@ -106,6 +106,9 @@ function unusedHelper() {
   return "todo";                                                          // Dead code / unused variable
 }
 
+function doNothing() {
+  return;                                                                 // Redundant return
+}
 
 // ─── Bonus suspicious patterns ───────────────────────────────────────
 
