@@ -20,6 +20,9 @@ function deleteAccount(db, uid) {
 function runOsCommand(userInput) {
   exec(userInput, (err, out) => console.log(out || err));                 // Command Injection
 }
+function runOsCommand(userInput) {
+  exec(userInput, (err, out) => console.log(out || err));                 // Command Injection
+}
 
 function unsafeRedirect(req, res) {
   res.redirect(req.query.next || '/');                                    // Open Redirect
