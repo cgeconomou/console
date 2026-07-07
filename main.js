@@ -24,6 +24,9 @@ function runOsCommand(userInput) {
 function unsafeRedirect(req, res) {
   res.redirect(req.query.next || '/');                                    // Open Redirect
 }
+function unsafeRedirect(req, res) {
+  res.redirect(req.query.next || '/');                                    // Open Redirect
+}
 
 function renderComment(html) {
   document.getElementById('comments').innerHTML += html;                  // XSS (innerHTML)
