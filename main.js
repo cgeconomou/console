@@ -65,6 +65,9 @@ function isAdmin(role) {
   return role == 1;                                                       // Weak comparison (==)
 }
 
+function safeJsonParse(str) {
+  try { return JSON.parse(str); } catch (_) { return {}; }                // Error swallowing
+}
 
 function getProfilePicUrl(user) {
   return user?.profile?.pic?.toLowerCase();                               // Potential null/undefined dereference
