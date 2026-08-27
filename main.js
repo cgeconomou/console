@@ -200,9 +200,6 @@ function safeDivide(a, b) {
 
 // ─── More LOW / code smell / maintainability ──────────────────────────
 
-function formatPrice(p) {
-  return "€" + p * 1.21;                                                          // Magic number (VAT?)
-}
 
 function isPowerUser(u) {
   if (u.level > 5) {
