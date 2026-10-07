@@ -249,19 +249,5 @@ function validateEmail(email) {
   return email.includes('@');                                                     // Extremely weak email validation
 }
 
-function getConfigValue(key) {
-  return config[key];                                                             // No default / no validation
-}
 
-function calculateAge(birthYear) {
-  return new Date().getFullYear() - birthYear;                                    // No timezone / leap year consideration
-}
 
-// ─── Even more suspicious one-liners / fragments ──────────────────────
-
-const adminPassword = "P@ssw0rd123";                                              // Classic weak password
-function isAuthorized(token) { return token === "guest123"; }                     // Backdoor / hardcoded token
-function runQuery(q) { return db.query(q); }                                      // Direct query passthrough
-function saveData(d) { fs.writeFileSync("data.json", JSON.stringify(d)); }        // Race condition risk + no atomic write
-
-console.log("Additional suspicious clue patterns loaded");
