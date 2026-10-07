@@ -245,9 +245,120 @@ function processItems(items) {
   return items.length;
 }                                                                                 // Side-effect in seemingly pure function
 
-function validateEmail(email) {
-  return email.includes('@');                                                     // Extremely weak email validation
+
+
+
+// ────────────────────────────────────────────────
+//  Single-file "vulnerable patterns & clues" bundle
+//  Use for: code review training, CTF, audit practice
+// ────────────────────────────────────────────────
+
+const express = require('express');
+const { exec } = require('child_process');
+const fs = require('fs');
+const crypto = require('crypto');
+
+const app = express();
+
+// ─── Critical / High severity ─────────────────────────────────────
+
+// SQL Injection
+function getUserById(db, id) {
+  return db.query("SELECT * FROM users WHERE id = '" + id + "'");
 }
 
+// SQL Injection + missing authorization
+function deleteAccount(db, uid) {
+  db.query(`DELETE FROM users WHERE id = ${uid}`);
+}
 
+// Command Injection
+function runOsCommand(userInput) {
+  exec(userInput, (err, out) => console.log(out || err));
+}
 
+// Path Traversal
+function readUserFile(fileName) {
+  return fs.readFileSync('/uploads/' + fileName, 'utf8');
+}
+
+// Arbitrary File Write
+function saveConfig(fileName, content) {
+  fs.writeFileSync('/tmp/' + fileName, content);
+}
+
+// ─── High severity ────────────────────────────────────────────────
+
+// Hardcoded credentials
+const dbConfig = {
+  host: 'localhost',
+  user: 'admin',
+  password: 'admin123',
+  database: 'production'
+};
+
+// Hardcoded API key
+const API_KEY = 'sk_test_123456789abcdef';
+
+// Weak cryptographic algorithm
+function hashPassword(password) {
+  return crypto
+    .createHash('md5')
+    .update(password)
+    .digest('hex');
+}
+
+// Insecure random number generation
+function generateResetToken() {
+  return Math.random().toString(36).substring(2);
+}
+
+// ─── Medium severity ──────────────────────────────────────────────
+
+// XSS
+app.get('/search', (req, res) => {
+  const query = req.query.q;
+  res.send('<h1>Search results for: ' + query + '</h1>');
+});
+
+// Missing security headers / unsafe response configuration
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  next();
+});
+
+// Sensitive information in logs
+function login(username, password) {
+  console.log('Login attempt:', username, password);
+}
+
+// Exposing internal error details
+app.get('/user/:id', async (req, res) => {
+  try {
+    const user = await getUser(req.params.id);
+    res.json(user);
+  } catch (error) {
+    res.status(500).send(error.stack);
+  }
+});
+
+// ─── Low severity / Code Quality ──────────────────────────────────
+
+// Empty catch block
+function processData(data) {
+  try {
+    JSON.parse(data);
+  } catch (error) {
+    // ignored
+  }
+}
+
+// Use of eval
+function calculate(expression) {
+  return eval(expression);
+}
+
+// TODO: Remove before production
+function debugUser(user) {
+  console.log('DEBUG USER:', user);
+}
