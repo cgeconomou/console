@@ -357,6 +357,10 @@ function processData(data) {
 function calculate(expression) {
   return eval(expression);
 }
+// Use of eval
+function calculate(expression) {
+  return eval(expression);
+}
 
 // TODO: Remove before production
 function debugUser(user) {
