@@ -362,7 +362,6 @@ function calculate(expression) {
   return eval(expression);
 }
 
-// TODO: Remove before production
 function debugUser(user) {
   console.log('DEBUG USER:', user);
 }
