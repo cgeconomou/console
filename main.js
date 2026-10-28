@@ -365,3 +365,6 @@ function calculate(expression) {
 function debugUser(user) {
   console.log('DEBUG USER:', user);
 }
+function debugUser(user) {
+  console.log('DEBUG USER:', user);
+}
