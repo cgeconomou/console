@@ -361,10 +361,12 @@ function calculate(expression) {
 function calculate(expression) {
   return eval(expression);
 }
+// Use of eval
 
 function debugUser(user) {
   console.log('DEBUG USER:', user);
 }
+// Use of eval
 
 function debugUser(user) {
   console.log('DEBUG USER:', user);
