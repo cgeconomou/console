@@ -400,6 +400,3 @@ function debugUser(user) {
 }
 // Use of eval
 
-function debugUser(user) {
-  console.log('DEBUG USER:', user);
-}
