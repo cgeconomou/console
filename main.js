@@ -198,6 +198,14 @@ function safeDivide(a, b) {
   }                                                                               // Swallowing division by zero
 }
 
+function safeDivide(a, b) {
+  try {
+    return a / b;
+  } catch {
+    return 0;
+  }                                                                               // Swallowing division by zero
+}
+
 // ─── More LOW / code smell / maintainability ──────────────────────────
 
 
