@@ -340,71 +340,20 @@ function login(username, password) {
   console.log('Login attempt:', username, password);
 }
 
-// Exposing internal error details
-app.get('/user/:id', async (req, res) => {
-  try {
-    const user = await getUser(req.params.id);
-    res.json(user);
-  } catch (error) {
-    res.status(500).send(error.stack);
-  }
-});
-
-// ─── Low severity / Code Quality ──────────────────────────────────
-
-// Empty catch block
-function processData(data) {
-  try {
-    JSON.parse(data);
-  } catch (error) {
-    // ignored
-  }
+// 2. Insecure comparison (loose equality)
+function checkPermission(user, required) {
+  return user.role == required;
 }
 
-// Use of eval
-function calculate(expression) {
-  return eval(expression);
+// 3. ReDoS - user-controlled regular expression
+function parseSearchQuery(query) {
+  const regex = new RegExp(query, 'i');
+  return regex.test('sample search text');
 }
-// Use of eval
-function calculate(expression) {
-  return eval(expression);
-}
-// Use of eval
 
-function debugUser(user) {
-  console.log('DEBUG USER:', user);
+// 4. Path Traversal - user-controlled file path
+function readUserFile(filename) {
+  const filePath = path.join(__dirname, 'uploads', filename);
+  return fs.readFileSync(filePath, 'utf8');
 }
-// Use of eval
-
-function debugUser(user) {
-  console.log('DEBUG USER:', user);
-}
-// Use of eval
-function calculate(expression) {
-  return eval(expression);
-}
-// Use of eval
-function calculate(expression) {
-  return eval(expression);
-}
-// Use of eval
-
-function debugUser(user) {
-  console.log('DEBUG USER:', user);
-}
-// Use of eval
-
-function debugUser(user) {
-  console.log('DEBUG USER:', user);
-}
-// Use of eval
-function calculate(expression) {
-  return eval(expression);
-}
-// Use of eval
-
-function debugUser(user) {
-  console.log('DEBUG USER:', user);
-}
-// Use of eval
 
